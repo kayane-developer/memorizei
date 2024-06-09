@@ -1,21 +1,19 @@
 package com.memorizei.model.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@Table(name = "t_usuario")
-public class Usuario extends BaseEntity {
+@Table(name = "t_alteracao_usuario")
+public class AlteracaoUsuario extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private Boolean ativo;
 
     private String nome;
 
@@ -23,5 +21,9 @@ public class Usuario extends BaseEntity {
 
     @Column(name = "hash_senha")
     private String hashSenha;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_usuario")
+    private Usuario usuario;
 
 }

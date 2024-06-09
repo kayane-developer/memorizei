@@ -20,4 +20,14 @@ public class RestExceptionHandler {
                 .build();
     }
 
+    @ExceptionHandler(LoginException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestErrorResponseDTO handleEntidadeNaoEncontrada(LoginException exception) {
+        return RestErrorResponseDTO.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .date(LocalDateTime.now())
+                .build();
+    }
+
 }
