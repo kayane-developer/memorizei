@@ -24,19 +24,19 @@ public class UsuarioService {
     }
 
     public UsuarioDTO cadastrar(UsuarioDTO usuarioDTO) {
-        repository.findByEmailIgnoreCase(usuarioDTO.getEmail())
+        repository.findByUsuario(usuarioDTO.getUsuario())
                 .ifPresent(usuarioExistente -> {
-                    throw new LoginException("Já existe um usuário cadastrado com o email informado");
+                    throw new LoginException("Já existe um usuário cadastrado com o nome informado");
                 });
-        final var usuario = converter.dtoToEntity(usuarioDTO);
-        alteracaoUsuarioService.salvarAlteracaoDoUsuario(usuario);
-        return converter.entityToDto(repository.save(usuario));
+        final var usuarioSalvo = repository.save(converter.dtoToEntity(usuarioDTO));
+        alteracaoUsuarioService.salvarAlteracaoDoUsuario(usuarioSalvo);
+        return converter.entityToDto(usuarioSalvo);
     }
 
-    public void validarLoginUsuario(String email, String senha) {
-        final var usuario = repository.findByEmailIgnoreCase(email)
+    public void validarLoginUsuario(String nomeUsuario, String senha) {
+        final var usuario = repository.findByUsuario(nomeUsuario)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não cadastrado"));
-        if (CredencialUtils.isSenhaCorreta(senha, usuario.getHashSenha())) {
+        if (!CredencialUtils.isSenhaCorreta(senha, usuario.getHashSenha())) {
             throw new LoginException("Senha incorreta");
         }
     }

@@ -3,16 +3,20 @@ package com.memorizei.converter;
 import com.memorizei.dto.UsuarioDTO;
 import com.memorizei.model.entity.Usuario;
 import com.memorizei.utils.CredencialUtils;
+import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Component
 public class UsuarioConverter {
 
     public Usuario dtoToEntity(UsuarioDTO usuarioDTO) {
         final var usuario = new Usuario();
-        usuario.setNome(usuarioDTO.getNome());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setHashSenha(CredencialUtils.encriptografarSenha(usuario.getHashSenha()));
+        usuario.setUsuario(usuarioDTO.getUsuario());
+        usuario.setAtivo(true);
+        usuario.setHashSenha(CredencialUtils.encriptografarSenha(usuarioDTO.getSenha()));
+        usuario.setDataInsercao(LocalDateTime.now());
         if (Objects.nonNull(usuarioDTO.getId())) {
             usuario.setId(usuario.getId());
             usuario.setDataInsercao(usuarioDTO.getDataInsercao());
@@ -23,8 +27,7 @@ public class UsuarioConverter {
     public UsuarioDTO entityToDto(Usuario usuario) {
         final var usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(usuario.getId());
-        usuarioDTO.setNome(usuario.getNome());
-        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setUsuario(usuario.getUsuario());
         usuarioDTO.setDataInsercao(usuario.getDataInsercao());
         return usuarioDTO;
     }
