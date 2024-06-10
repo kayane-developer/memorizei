@@ -18,8 +18,7 @@ public class AlteracaoUsuarioService {
         final var alteracaoUsuario = new AlteracaoUsuario();
         alteracaoUsuario.setUsuario(usuario);
         alteracaoUsuario.setDataInsercao(LocalDateTime.now());
-        alteracaoUsuario.setNome(usuario.getNome());
-        alteracaoUsuario.setEmail(usuario.getEmail());
+        alteracaoUsuario.setNomeUsuario(usuario.getUsuario());
         alteracaoUsuario.setHashSenha(usuario.getHashSenha());
 
         repository.save(alteracaoUsuario);

@@ -3,21 +3,22 @@ package com.memorizei.model.entity;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Setter
 @Entity
 @Table(name = "t_alteracao_usuario")
-public class AlteracaoUsuario extends BaseEntity {
+public class AlteracaoUsuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean ativo;
+    @Column(name = "data_insercao")
+    private LocalDateTime dataInsercao;
 
-    private String nome;
-
-    private String email;
+    @Column(name = "usuario")
+    private String nomeUsuario;
 
     @Column(name = "hash_senha")
     private String hashSenha;
