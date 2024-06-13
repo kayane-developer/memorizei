@@ -5,7 +5,6 @@ import com.memorizei.model.entity.Usuario;
 import com.memorizei.utils.CredencialUtils;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
@@ -16,10 +15,8 @@ public class UsuarioConverter {
         usuario.setUsuario(usuarioDTO.getUsuario());
         usuario.setAtivo(true);
         usuario.setHashSenha(CredencialUtils.encriptografarSenha(usuarioDTO.getSenha()));
-        usuario.setDataInsercao(LocalDateTime.now());
         if (Objects.nonNull(usuarioDTO.getId())) {
             usuario.setId(usuario.getId());
-            usuario.setDataInsercao(usuarioDTO.getDataInsercao());
         }
         return usuario;
     }
