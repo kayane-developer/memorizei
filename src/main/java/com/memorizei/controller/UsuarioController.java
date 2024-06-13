@@ -17,7 +17,7 @@ public class UsuarioController {
 
     @GetMapping("{id}")
     public UsuarioDTO buscarUsuario(@PathVariable Long id) {
-        return service.buscarUsuario(id);
+        return service.buscarUsuarioDTO(id);
     }
 
     @PostMapping()

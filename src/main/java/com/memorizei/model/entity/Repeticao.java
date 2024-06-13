@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 @Setter
 @Entity
-@Table(name = "t_alteracao_usuario")
-public class AlteracaoUsuario {
+@Table(name = "t_repeticao")
+public class Repeticao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +17,21 @@ public class AlteracaoUsuario {
     @Column(name = "data_insercao", updatable = false)
     private LocalDateTime dataInsercao;
 
-    @Column(name = "usuario")
-    private String nomeUsuario;
+    private boolean ativo;
 
-    @Column(name = "hash_senha")
-    private String hashSenha;
+    private String dificuldade;
 
     @ManyToOne
     @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_card")
+    private Card card;
+
+    @PrePersist
+    private void setarDataInsercao() {
+        this.setDataInsercao(LocalDateTime.now());
+    }
 
 }

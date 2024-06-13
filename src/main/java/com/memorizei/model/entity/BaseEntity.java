@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Column(name = "data_insercao")
+    @Column(name = "data_insercao", updatable = false)
     private LocalDateTime dataInsercao;
 
     @Column(name = "data_alteracao")
@@ -21,8 +22,14 @@ public class BaseEntity {
 
     private boolean ativo;
 
-    @PrePersist
+    @PreUpdate
     private void alterarDataEdicao() {
+        this.dataEdicao = LocalDateTime.now();
+    }
+
+    @PrePersist
+    private void setarDataInsercao() {
+        this.dataInsercao = LocalDateTime.now();
         this.dataEdicao = LocalDateTime.now();
     }
 

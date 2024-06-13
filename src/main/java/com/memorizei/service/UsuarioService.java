@@ -4,6 +4,7 @@ import com.memorizei.converter.UsuarioConverter;
 import com.memorizei.dto.UsuarioDTO;
 import com.memorizei.exception.EntidadeNaoEncontradaException;
 import com.memorizei.exception.LoginException;
+import com.memorizei.model.entity.Usuario;
 import com.memorizei.model.repository.UsuarioRepository;
 import com.memorizei.utils.CredencialUtils;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,14 @@ public class UsuarioService {
     private final UsuarioRepository repository;
     private final AlteracaoUsuarioService alteracaoUsuarioService;
 
-    public UsuarioDTO buscarUsuario(Long id) {
+    public UsuarioDTO buscarUsuarioDTO(Long id) {
         return repository.findById(id)
                 .map(converter::entityToDto)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com o id " + id));
+    }
+
+    public Usuario buscarOuFalharPorId(Long id) {
+        return repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com o id " + id));
     }
 
