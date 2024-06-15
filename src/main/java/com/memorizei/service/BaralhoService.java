@@ -5,12 +5,15 @@ import com.memorizei.dto.BaralhoDTO;
 import com.memorizei.exception.EntidadeNaoEncontradaException;
 import com.memorizei.model.entity.Baralho;
 import com.memorizei.model.repository.BaralhoRepository;
+import com.memorizei.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class BaralhoService {
@@ -20,6 +23,7 @@ public class BaralhoService {
     private final UsuarioService usuarioService;
 
     public Baralho cadastrar(BaralhoDTO baralhoDTO) {
+        log.info("Cadastrando baralho: {}", JsonUtils.toJson(baralhoDTO));
         final var baralho = converter.dtoToEntity(baralhoDTO);
         return repository.save(baralho);
     }

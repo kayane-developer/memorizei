@@ -7,9 +7,12 @@ import com.memorizei.exception.LoginException;
 import com.memorizei.model.entity.Usuario;
 import com.memorizei.model.repository.UsuarioRepository;
 import com.memorizei.utils.CredencialUtils;
+import com.memorizei.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
@@ -35,6 +38,7 @@ public class UsuarioService {
                     throw new LoginException("Já existe um usuário cadastrado com o nome informado");
                 });
         final var usuarioSalvo = repository.save(converter.dtoToEntity(usuarioDTO));
+        log.info("Usuário cadastrado: {}", JsonUtils.toJson(usuarioSalvo));
         alteracaoUsuarioService.salvarAlteracaoDoUsuario(usuarioSalvo);
         return converter.entityToDto(usuarioSalvo);
     }

@@ -8,7 +8,9 @@ import com.memorizei.exception.EntidadeNaoEncontradaException;
 import com.memorizei.model.entity.Card;
 import com.memorizei.model.enums.DificuldadeEnum;
 import com.memorizei.model.repository.CardRepository;
+import com.memorizei.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class CardService {
@@ -24,6 +27,7 @@ public class CardService {
     private final CardRepository repository;
 
     public Card cadastrar(CardDTO cardDTO) {
+        log.info("Cadastrando card: {}", JsonUtils.toJson(cardDTO));
         final var card = converter.dtoToEntity(cardDTO);
         return repository.save(card);
     }
