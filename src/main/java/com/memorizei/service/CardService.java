@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,16 +59,11 @@ public class CardService {
         return cards.stream()
                 .filter(card -> {
                     final var dataDeInsercao = card.getDataInsercao().toLocalDate();
+                    final var diferenca = dataDeInsercao.until(hoje, ChronoUnit.DAYS);
                     final var dificuldade = card.getDificuldade();
-                    final var temUmDia = dataDeInsercao.plusDays(1).isAfter(hoje) ||
-                            dataDeInsercao.plusDays(1).isEqual(hoje);
-                    final var temTresDias = dataDeInsercao.plusDays(3).isAfter(hoje) ||
-                            dataDeInsercao.plusDays(3).isEqual(hoje);
-                    final var temCincoDias = dataDeInsercao.plusDays(5).isAfter(hoje) ||
-                            dataDeInsercao.plusDays(5).isEqual(hoje);
-                    return (DificuldadeEnum.FACIL.name().equals(dificuldade) && temUmDia) ||
-                            (DificuldadeEnum.MEDIO.name().equals(dificuldade) && temTresDias) ||
-                            (DificuldadeEnum.DIFICIL.name().equals(dificuldade) && temCincoDias);
+                    return (DificuldadeEnum.FACIL.name().equals(dificuldade) && (diferenca >= 5)) ||
+                            (DificuldadeEnum.MEDIO.name().equals(dificuldade) && (diferenca >= 3)) ||
+                            (DificuldadeEnum.DIFICIL.name().equals(dificuldade) && (diferenca >= 1));
                 })
                 .collect(Collectors.toList());
     }
