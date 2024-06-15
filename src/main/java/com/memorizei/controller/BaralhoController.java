@@ -23,10 +23,9 @@ public class BaralhoController {
         return service.cadastrar(baralhoDTO);
     }
 
-    @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<Baralho>> buscarPorUsuario(@PathVariable Long idUsuario) {
-        final var baralhos = service.buscarPorIdUsuario(idUsuario);
-        return CollectionUtils.isEmpty(baralhos) ? ResponseEntity.noContent().build() : ResponseEntity.ok(baralhos);
+    @GetMapping("usuario/{idUsuario}")
+    public List<BaralhoDTO> buscarBaralhosDoUsuario(@PathVariable Long idUsuario) {
+        return service.buscarPorIdUsuario(idUsuario);
     }
 
 }

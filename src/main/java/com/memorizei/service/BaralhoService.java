@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +29,11 @@ public class BaralhoService {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Nenhum baralho foi encontrado com o id informado"));
     }
 
-    public List<Baralho> buscarPorIdUsuario(Long idUsuario) {
+    public List<BaralhoDTO> buscarPorIdUsuario(Long idUsuario) {
         usuarioService.buscarOuFalharPorId(idUsuario);
-        return repository.buscarAtivosPorUsuario(idUsuario);
+        return repository.findByUsuarioIdAndAtivoTrue(idUsuario).stream()
+                .map(converter::entityToDto)
+                .collect(Collectors.toList());
     }
 
 }

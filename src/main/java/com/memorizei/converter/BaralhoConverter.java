@@ -27,4 +27,15 @@ public class BaralhoConverter {
         return baralho;
     }
 
+    public BaralhoDTO entityToDto(Baralho baralho) {
+        final var baralhoDTO = new BaralhoDTO();
+        baralhoDTO.setId(baralho.getId());
+        baralhoDTO.setNome(baralho.getNome());
+        baralhoDTO.setIdUsuario(baralho.getUsuario().getId());
+        baralhoDTO.setPrivado(baralho.isPrivado());
+        baralhoDTO.setDataInsercao(baralho.getDataInsercao());
+
+        return baralhoDTO;
+    }
+
 }
