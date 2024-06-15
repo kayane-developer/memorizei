@@ -18,4 +18,12 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             "and r.ativo = true", nativeQuery = true)
     List<PendenciaResponseDTO> buscarRepeticoesCardAtivosDoUsuario(Long idUsuario);
 
+    @Query(value = "select b.id as idBaralho, b.nome as nomeBaralho, c.id as idCard, c.pergunta as perguntaCard, " +
+            "c.resposta as respostaCard " +
+            "from t_card c " +
+            "join t_baralho b on b.id = c.fk_baralho " +
+            "where b.fk_usuario = :idUsuario " +
+            "and b.ativo = true", nativeQuery = true)
+    List<PendenciaResponseDTO> buscarCardsAtivosDoUsuario(Long idUsuario);
+
 }

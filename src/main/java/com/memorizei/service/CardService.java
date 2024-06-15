@@ -33,25 +33,15 @@ public class CardService {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Card não encontrado com o id informado"));
     }
 
+    public List<PendenciaDTO> buscarCardsDoUsuario(Long idUsuario) {
+        final var cards = repository.buscarCardsAtivosDoUsuario(idUsuario);
+        return separarPorBaralho(cards);
+    }
+
     public List<PendenciaDTO> buscarCardsPendentes(Long idUsuario) {
         final var cardsAtivos = repository.buscarRepeticoesCardAtivosDoUsuario(idUsuario);
-        final var pendenciasPorBaralho = filtrarCardsPendentes(cardsAtivos)
-                .stream()
-                .collect(Collectors.groupingBy(PendenciaResponseDTO::getIdBaralho));
-        return pendenciasPorBaralho.entrySet().stream()
-                .map(entry -> {
-                    final var idBaralho = entry.getKey();
-                    final var nomeBaralho = entry.getValue().get(0).getNomeBaralho();
-                    final var cardsPendentes = entry.getValue().stream()
-                            .map(response -> PendenciaDTO.CardPendente.builder()
-                                    .idCard(response.getIdCard())
-                                    .perguntaCard(response.getPerguntaCard())
-                                    .respostaCard(response.getRespostaCard())
-                                    .dificuldade(response.getDificuldade())
-                                    .build())
-                            .collect(Collectors.toList());
-                    return new PendenciaDTO(idBaralho, nomeBaralho, cardsPendentes);
-                }).collect(Collectors.toList());
+        final var cardsPendentes = filtrarCardsPendentes(cardsAtivos);
+        return separarPorBaralho(cardsPendentes);
     }
 
     private List<PendenciaResponseDTO> filtrarCardsPendentes(List<PendenciaResponseDTO> cards) {
@@ -66,6 +56,25 @@ public class CardService {
                             (DificuldadeEnum.DIFICIL.name().equals(dificuldade) && (diferenca >= 1));
                 })
                 .collect(Collectors.toList());
+    }
+
+    private List<PendenciaDTO> separarPorBaralho(List<PendenciaResponseDTO> cards) {
+        final var cardsPorBaralho = cards.stream()
+                .collect(Collectors.groupingBy(PendenciaResponseDTO::getIdBaralho));
+        return cardsPorBaralho.entrySet().stream()
+                .map(entry -> {
+                    final var idBaralho = entry.getKey();
+                    final var nomeBaralho = entry.getValue().get(0).getNomeBaralho();
+                    final var cardsPendentes = entry.getValue().stream()
+                            .map(response -> PendenciaDTO.CardPendente.builder()
+                                    .idCard(response.getIdCard())
+                                    .perguntaCard(response.getPerguntaCard())
+                                    .respostaCard(response.getRespostaCard())
+                                    .dificuldade(response.getDificuldade())
+                                    .build())
+                            .collect(Collectors.toList());
+                    return new PendenciaDTO(idBaralho, nomeBaralho, cardsPendentes);
+                }).collect(Collectors.toList());
     }
 
 }
