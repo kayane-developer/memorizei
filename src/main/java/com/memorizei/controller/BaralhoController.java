@@ -29,10 +29,4 @@ public class BaralhoController {
         return CollectionUtils.isEmpty(baralhos) ? ResponseEntity.noContent().build() : ResponseEntity.ok(baralhos);
     }
 
-//    @GetMapping("/cards/usuario/{idUsuario}")
-//    public ResponseEntity<List<Baralho>> buscarComCardsPorUsuario(@PathVariable Long idUsuario) {
-//        final var baralhos = service.buscarComCardsPorIdUsuario(idUsuario);
-//        return CollectionUtils.isEmpty(baralhos) ? ResponseEntity.noContent().build() : ResponseEntity.ok(baralhos);
-//    }
-
 }
