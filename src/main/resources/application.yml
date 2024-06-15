@@ -3,12 +3,13 @@ spring:
     name: memorizei
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/memorizei
-    username: application
-    password: apppassword123
+    url: ${JAWSDB_URL}
+#    username: application
+#    password: apppassword123
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
   security:
     user:
       name: development
