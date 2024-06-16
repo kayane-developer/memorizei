@@ -43,12 +43,13 @@ public class UsuarioService {
         return converter.entityToDto(usuarioSalvo);
     }
 
-    public void validarLoginUsuario(String nomeUsuario, String senha) {
+    public UsuarioDTO validarLoginUsuario(String nomeUsuario, String senha) {
         final var usuario = repository.findByUsuario(nomeUsuario)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não cadastrado"));
         if (!CredencialUtils.isSenhaCorreta(senha, usuario.getHashSenha())) {
             throw new LoginException("Senha incorreta");
         }
+        return converter.entityToDto(usuario);
     }
 
 }

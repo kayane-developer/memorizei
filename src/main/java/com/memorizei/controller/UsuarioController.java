@@ -27,8 +27,8 @@ public class UsuarioController {
     }
 
     @PostMapping("validar/{nomeUsuario}/{senha}")
-    public void validarLogin(@PathVariable String nomeUsuario, @PathVariable String senha) {
-        service.validarLoginUsuario(nomeUsuario, senha);
+    public UsuarioDTO validarLogin(@PathVariable String nomeUsuario, @PathVariable String senha) {
+        return service.validarLoginUsuario(nomeUsuario, senha);
     }
 
 }

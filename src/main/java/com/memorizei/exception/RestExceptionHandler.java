@@ -22,7 +22,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(LoginException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrorResponseDTO handleEntidadeNaoEncontrada(LoginException exception) {
+    public RestErrorResponseDTO handleLogin(LoginException exception) {
         return RestErrorResponseDTO.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())
